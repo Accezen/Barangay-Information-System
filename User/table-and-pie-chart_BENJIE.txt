@@ -1,0 +1,204 @@
+<h3 class="w3-padding">Demographics</h3>
+    <div class="w3-row-padding">
+      <div class="w3-half">
+        <style>
+            table{
+                border-collapse: collapse;
+                border: 1px solid black;
+                padding: 10px;
+                empty-cells: hide;
+            }
+
+            th{
+                /* border: 1px solid black; */
+                padding: 10px;
+                height: 40px;
+                text-align: center;
+            }
+
+            td{
+                
+                /* border: 1px solid black; */
+                padding: 10px;
+                text-align: right;
+            }  
+
+            .aleft{
+                text-align: left;
+                font-weight: bold;
+            }
+
+            .tbord{
+                border-top: 1px solid black;
+            }
+
+        </style>
+        <table>
+            <tr>
+                <th>AGE GROUP</th>
+                <th>POPULATION (2015)</th>
+                <th>AGE GROUP PERCENTAGE</th>
+            </tr>
+    
+            <tr>
+                <td class="aleft">Under 1</td>
+                <td>27</td>
+                <td>1.06%</td>
+            </tr>
+    
+            <tr>
+                <td class="aleft">1 to 4</td>
+                <td>160</td>
+                <td>6.26%</td>
+            </tr>
+    
+            <tr>
+                <td class="aleft">5 to 9</td>
+                <td>230</td>
+                <td>9.00%</td>
+            </tr>
+
+            <tr>
+                <td class="aleft">10 to 14</td>
+                <td>256</td>
+                <td>10.02%</td>
+            </tr>
+
+            <tr>
+                <td class="aleft">15 to 19</td>
+                <td>219</td>
+                <td>8.57%</td>
+            </tr>
+
+            <tr>
+                <td class="aleft">20 to 24</td>
+                <td>199</td>
+                <td>7.79%</td>
+            </tr>
+
+            <tr>
+                <td class="aleft">25 to 29</td>
+                <td>198</td>
+                <td>77.75%</td>
+            </tr>
+
+            <tr>
+                <td class="aleft">230 to 34</td>
+                <td>225</td>
+                <td>8.80%</td>
+            </tr>
+
+            <tr>
+                <td class="aleft">35 to 39</td>
+                <td>195</td>
+                <td>7.63%</td>
+            </tr>
+
+            <tr>
+                <td class="aleft">40 to 44</td>
+                <td>150</td>
+                <td>5.87%</td>
+            </tr>
+
+            <tr>
+                <td class="aleft">50 to 54</td>
+                <td>133</td>
+                <td>5.20%</td>
+            </tr>
+
+            <tr>
+                <td class="aleft">55 to 59</td>
+                <td>112</td>
+                <td>4.38%</td>
+            </tr>
+
+            <tr>
+                <td class="aleft">60 to 64</td>
+                <td>90</td>
+                <td>3.52%</td>
+            </tr>
+
+            <tr>
+                <td class="aleft">70 to 74</td>
+                <td>51</td>
+                <td>2.00%</td>
+            </tr>
+
+            <tr>
+                <td class="aleft">75 to 794</td>
+                <td>34</td>
+                <td>1.33%</td>
+            </tr>
+
+            <tr>
+                <td class="aleft">80 and over</td>
+                <td>43</td>
+                <td>1.68%</td>
+            </tr>
+
+            <tr class="tbord">
+                <td class="aleft">TOTAL</td>
+                <td>25000</td>
+                <td>100.00%</td>
+            </tr>
+
+            <tr>
+                <td colspan="3" class="aleft">
+                    <ul>
+                        <li>Youth Dependency Ratio: 40.42</li>
+                        <li>Old Age Dependency Ratio: 13.09</li>
+                        <li>Total Dependency Ratio: 53.51</li>
+                        <li>Median Age: 29.72</li>
+                    </ul>
+                </td>
+            </tr>
+        </table>
+      </div>
+
+      <div class="w3-half">
+        <div id="piechart"></div>
+
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js">
+        </script>
+
+        <script type="text/javascript">
+        // Load google charts
+        google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(drawChart);
+
+        // Draw the chart and set the chart values
+        function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+        ['AGE GROUP', 'POPULATION'],
+        ['Under 1', 27],
+        ['1 to 4', 160],
+        ['5 to 9', 230],
+        ['10 to 14', 256],
+        ['15 to 19', 219],
+        ['20 to 24', 199],
+        ['25 to 29', 198],
+        ['30 to 34', 225],
+        ['35 to 39', 195],
+        ['40 to 44', 150],
+        ['45 to 49', 136],
+        ['50 to 54', 133],
+        ['55 to 59', 112],
+        ['60 to 64', 98],
+        ['65 to 69', 90],
+        ['70 to 74', 51],
+        ['75 to 79', 34],
+        ['80 and over', 43]
+        ]);
+
+        // Optional; add a title and set the width and height of the chart
+        var options = {'title':'INDIVIDUAL AGE GROUPS', 'width':550, 'height':400};
+
+        // Display the chart inside the <div> element with id="piechart"
+        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+        chart.draw(data, options);
+        }
+        </script>
+
+      </div>
+    <!-- End Grid/Pricing tables -->
+    </div>

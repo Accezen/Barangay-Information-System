@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<title>ABOUT</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="SanJacinto_logo.png" type="image/icon type">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<body>
+
+<!-- Navbar (sit on top) -->
+<div class="w3-top">
+  <div class="w3-bar w3-white w3-card" id="myNavbar">
+    <a href="index.html" class="w3-bar-item w3-button w3-wide"><img style="width: 50px; margin-left: 20px;" 
+      src="SanJacinto_logo.png" alt="Logo">&nbsp;  Barangay Capaoay</a>
+    <!-- Right-sided navbar links -->
+    <div class="w3-right w3-hide-small" style="margin-top:11px;">
+      <a href="index.html" class="w3-bar-item w3-button"><i class="fa fa-home"></i> HOME</a>
+      <a href="community.html" class="w3-bar-item w3-button"><i class="fa fa-users"></i> COMMUNITY</a>
+      <a href="#" class="w3-bar-item w3-button"><i class="fa fa-info-circle"></i> ABOUT</a>
+      <a href="contact.html" class="w3-bar-item w3-button"><i class="fa fa-address-book"></i> CONTACT</a>
+    </div>
+    <!-- Hide right-floated links on small screens and replace them with a menu icon -->
+
+    <a href="javascript:void(0)" class="w3-bar-item w3-button w3-right w3-hide-large w3-hide-medium" onclick="w3_open()">
+      <i class="fa fa-bars"></i>
+    </a>
+  </div>
+</div>
+<!-- Sidebar on small screens when clicking the menu icon -->
+<nav class="w3-sidebar w3-bar-block w3-black w3-card w3-animate-left w3-hide-medium w3-hide-large" style="display:none" id="mySidebar">
+  <a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-large w3-padding-16">Close ×</a>
+  <a href="index.html" onclick="w3_close()" class="w3-bar-item w3-button">HOME</a>
+  <a href="community.html" onclick="w3_close()" class="w3-bar-item w3-button">COMMUNITY</a>
+  <a href="#" onclick="w3_close()" class="w3-bar-item w3-button">ABOUT</a>
+  <a href="contact.html" onclick="w3_close()" class="w3-bar-item w3-button">CONTACT</a>
+</nav>
+
+
+<!-- -------------------------MISSION & VISION ------------------------->
+
+<div class="w3-container w3-padding-64" style="margin-top: 5%;" id="misvis">
+  <h2 class="w3-center">ABOUT BARANGAY CAPAOAY</h2>
+
+  <div class="w3-row-padding w3-center" style="margin-top:50px;">
+
+    <div class="w3-half w3-light-blue w3-padding-16">
+      <i class="fa fa-bullseye w3-jumbo"></i>
+      <p class="w3-xxlarge">MISSION</p>
+      <p style="margin-bottom: 15%;">To be able to actively carry out the mandates and ensure transparency, honesty, and efficiency in the delivery of services in the barangay.</p>
+    </div>
+
+    <div class="w3-half w3-light-green w3-padding-16">
+      <i class="fa fa-eye w3-jumbo"></i>
+      <p class="w3-xxlarge">VISION</p>
+      <so>A progressive barangay governed by honest, sincere, hardworking, and united officials constitute with discipline, healthy, educated, cooperative, law abiding, and God-fearing people with so much oppurtunities in agriculture, industrial, and commercial aspect updated with modernization and maintain to be accessible safe, clean peaceful, and orderly place.</p>
+    </div>
+  </div>
+</div>
+
+
+<!-- -------------------------Organizational Chart ------------------------->
+
+<div class="w3-container w3-padding-64 w3-light-grey" id="chart">
+  <img class="w3-image w3-round-large " src="barangayDirectory.jpg" alt="barangayDirectory" width="1500" height="394">
+</div>
+
+
+<!-- Footer -->
+<footer class="w3-center w3-black w3-padding-64">
+  <a href="#" class="w3-button w3-light-grey"><i class="fa fa-arrow-up w3-margin-right"></i>Back to the top</a>
+  <div class="w3-xlarge w3-section">
+    <i class="fa fa-facebook-official w3-hover-opacity"></i>
+    <i class="fa fa-instagram w3-hover-opacity"></i>
+    <i class="fa fa-twitter w3-hover-opacity"></i>
+  </div>
+  <p>Powered by <a href="#" class="w3-hover-text-green">GROUP 2</a></p>
+</footer>
+ 
+<script>
+// Modal Image Gallery
+function onClick(element) {
+  document.getElementById("img01").src = element.src;
+  document.getElementById("modal01").style.display = "block";
+  var captionText = document.getElementById("caption");
+  captionText.innerHTML = element.alt;
+}
+
+
+// Toggle between showing and hiding the sidebar when clicking the menu icon
+var mySidebar = document.getElementById("mySidebar");
+
+function w3_open() {
+  if (mySidebar.style.display === 'block') {
+    mySidebar.style.display = 'none';
+  } else {
+    mySidebar.style.display = 'block';
+  }
+}
+
+// Close the sidebar with the close button
+function w3_close() {
+    mySidebar.style.display = "none";
+}
+</script>
+
+</body>
+</html>
