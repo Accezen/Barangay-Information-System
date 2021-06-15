@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Start your development with a Dashboard for Bootstrap 4.">
+  <meta name="author" content="Creative Tim">
+  <title>Barangay Information Sysem</title>
+  <link rel="icon" href="assets/img/brand/user.svg" type="image/png">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700">
+  <!-- Icons -->
+  
+  <link rel="stylesheet" href="assets/vendor/nucleo/css/nucleo.css" type="text/css">
+  <link rel="stylesheet" href="assets/vendor/@fortawesome/fontawesome-free/css/all.min.css" type="text/css">
+  <link id="themestyle" rel="stylesheet" href="portal.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round|Open+Sans">
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+       <link id="theme-style" rel="stylesheet" href="assets/css/portal.css">
+  
+  <script defer src="plugins/fontawesome/js/all.min.js"></script>
+  <!-- Page plugins -->
+  <!-- Argon CSS -->
+  <link rel="stylesheet" href="assets/css/argon.css?v=1.2.0" type="text/css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<style>
+    body {
+        color: #404E67;
+        background: #F5F7FA;
+		font-family: 'Open Sans', sans-serif;
+	}
+	.table-wrapper {
+		width: 100%;
+		margin: 30px auto;
+        background: #fff;
+        box-shadow: 0 1px 1px rgba(0,0,0,.05);
+    }
+    .table-title {
+        padding-bottom: 10px;
+        margin: 0 0 10px;
+    }
+    .table-title h2 {
+        margin: 6px 0 0;
+        font-size: 22px;
+    }
+    .table-title .add-new {
+        float: right;
+		height: 30px;
+		font-weight: bold;
+		font-size: 12px;
+		text-shadow: none;
+		min-width: 100px;
+		border-radius: 50px;
+		line-height: 13px;
+    }
+	.table-title .add-new i {
+		margin-right: 4px;
+	}
+    table.table {
+        table-layout: auto;
+    }
+    table.table tr th, table.table tr td {
+        border-color: #e9e9e9;
+    }
+    table.table th i {
+        font-size: 13px;
+        margin: 0 5px;
+        cursor: pointer;
+    }
+    table.table th:last-child {
+        width: 100px;
+    }
+    table.table td a {
+		cursor: pointer;
+        display: inline-block;
+        margin: 0 5px;
+		min-width: 24px;
+    }    
+	table.table td a.add {
+        color: #27C46B;
+    }
+    table.table td a.edit {
+        color: #FFC107;
+    }
+    table.table td a.delete {
+        color: #E34724;
+    }
+    table.table td i {
+        font-size: 19px;
+    }
+	table.table td a.add i {
+        font-size: 24px;
+    	margin-right: -1px;
+        position: relative;
+        top: 3px;
+    }    
+    table.table .form-control {
+        height: 32px;
+        line-height: 32px;
+        box-shadow: none;
+        border-radius: 2px;
+    }
+	table.table .form-control.error {
+		border-color: #f50000;
+	}
+	table.table td .add {
+		display: none;
+	}
+	
+	
+</style>
+<script>
+$(document).ready(function(){
+	$('[data-toggle="tooltip"]').tooltip();
+	var actions = $("table td:last-child").html();
+	// Append table with add row form on add new button click
+    $(".add-new").click(function(){
+		$(this).attr("disabled", "disabled");
+		var index = $("table tbody tr:last-child").index();
+        var row = '<tr>' +
+			'<td><input type="text" class="form-control" name="name" id="id"></td>' +
+            '<td><input type="text" class="form-control" name="name" id="name"></td>' +
+            '<td><input type="text" class="form-control" name="address" id="address"></td>' +
+            '<td><input type="text" class="form-control" name="contac_no." id="contact_no"></td>' +
+			 '<td><input type="text" class="form-control" name="sex." id="sex"></td>' +
+			'<td><input type="text" class="form-control" name="b_date" id="b_date"></td>' +
+			'<td><input type="text" class="form-control" name="occupation" id="occupation"></td>' +
+			'<td>' + actions + '</td>' +
+        '</tr>';
+    	$("table").append(row);		
+		$("table tbody tr").eq(index + 1).find(".add, .edit").toggle();
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+	// Add row on add button click
+	$(document).on("click", ".add", function(){
+		var empty = false;
+		var input = $(this).parents("tr").find('input[type="text"]');
+        input.each(function(){
+			if(!$(this).val()){
+				$(this).addClass("error");
+				empty = true;
+			} else{
+                $(this).removeClass("error");
+            }
+		});
+		$(this).parents("tr").find(".error").first().focus();
+		if(!empty){
+			input.each(function(){
+				$(this).parent("td").html($(this).val());
+			});			
+			$(this).parents("tr").find(".add, .edit").toggle();
+			$(".add-new").removeAttr("disabled");
+		}		
+    });
+	// Edit row on edit button click
+	$(document).on("click", ".edit", function(){		
+        $(this).parents("tr").find("td:not(:last-child)").each(function(){
+			$(this).html('<input type="text" class="form-control" value="' + $(this).text() + '">');
+		});		
+		$(this).parents("tr").find(".add, .edit").toggle();
+		$(".add-new").attr("disabled", "disabled");
+    });
+	// Delete row on delete button click
+	$(document).on("click", ".delete", function(){
+        $(this).parents("tr").remove();
+		$(".add-new").removeAttr("disabled");
+    });
+});
+</script>
+
+</head>
+
+<body>
+  <!-- Sidenav -->
+  <nav class="sidenav navbar navbar-vertical  fixed-left  navbar-expand-xs navbar-light bg-white" id="sidenav-main">
+    <div class="scrollbar-inner">
+      <!-- Brand -->
+      <div class="sidenav-header  align-items-center">
+        <a class="navbar-brand" href="javascript:void(0)">
+          <img src="assets/img/brand/logo.png" class="navbar-brand-img" alt="...">
+          <p class="greetings">Information System</p>
+        </a>
+       
+      </div>
+      <div class="navbar-inner">
+        <!-- Collapse -->
+        <div class="collapse navbar-collapse" id="sidenav-collapse-main">
+          <!-- Nav items -->
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link " href="index.html">
+                <i class="ni ni-tv-2 text-dark"></i>
+                <span class="nav-link-text">Dashboard</span>
+              </a>
+            </li>
+			 <nav id="app-nav-main" class="app-nav app-nav-main flex-grow-1">
+				<ul class="app-menu list-unstyled accordion" id="menu-accordion">
+					<li class="nav-item">
+						<a class="nav-link active submenu-toggle" href="#" data-toggle="collapse" data-target="#submenu-2" aria-expanded="true" aria-controls="submenu-2">
+							<i class="ni ni-single-02 text-primary"></i>
+							<span class="nav-link-text text-primary font-weight-bold">Profiling</span>
+						</a>
+				<div id="submenu-2" class="submenu submenu-2 collapse show" data-parent="#menu-accordion" style="">
+					<ul class="submenu-list list-unstyled">
+						<li class="submenu-item"><a class="submenu-link text-primary" href="resident_list.html">Residents List</a></li>
+						<li class="submenu-item"><a class="submenu-link" href="household.html">Household List</a></li>
+                    </ul>
+                </div>
+			</li>
+           
+              <a class="nav-link" href="document_req.html">
+                <i class="ni ni-folder-17 text-dark"></i>
+                <span class="nav-link-text">Docx Request</span>
+              </a>
+           
+            <li class="nav-item">
+              <a class="nav-link" href="business_permitted.html">
+               <i class="ni ni-money-coins text-dark"></i></i>
+                <span class="nav-link-text text-dark">Businesses</span>
+              </a>
+            </li>
+                        <li class="nav-item">
+              <a class="nav-link" href="nws_info.html">
+                <i class="ni ni-single-02 text-dark"></i>
+                <span class="nav-link-text text-dark ">News & Updates</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="dir_of.html">
+                <i class="ni ni-bullet-list-67 text-dark"></i>
+                <span class="nav-link-text text-dark">Directory</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">
+                <i class="ni ni-bulb-61 text-dark"></i>
+                <span class="nav-link-text text-dark" data-toggle="modal" data-target="#exampleModalLong">About</span>
+              </a>
+            </li>
+          <!-- Navigation -->
+        </div>
+      </div>
+    </div>
+  </nav>
+  <!-- Main content -->
+  <div class="main-content" id="panel">
+    <!-- Topnav -->
+    <nav class="navbar navbar-top navbar-expand navbar-dark bg-primary border-bottom">
+      <div class="container-fluid">
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <!-- Search form -->
+          <form class="navbar-search navbar-search-light form-inline mr-sm-3" id="navbar-search-main">
+            <div class="form-group mb-0">
+              <div class="input-group input-group-alternative input-group-merge">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="fas fa-search"></i></span>
+                </div>
+                <input class="form-control" placeholder="Search" type="text">
+              </div>
+            </div>
+            <button type="button" class="close" data-action="search-close" data-target="#navbar-search-main" aria-label="Close">
+              <span aria-hidden="true">×</span>
+            </button>
+          </form>
+          <!-- Navbar links -->
+          <ul class="navbar-nav align-items-center  ml-md-auto ">
+            <li class="nav-item d-xl-none">
+              <!-- Sidenav toggler -->
+              <div class="pr-3 sidenav-toggler sidenav-toggler-dark" data-action="sidenav-pin" data-target="#sidenav-main">
+                <div class="sidenav-toggler-inner">
+                  <i class="sidenav-toggler-line"></i>
+                  <i class="sidenav-toggler-line"></i>
+                  <i class="sidenav-toggler-line"></i>
+                </div>
+              </div>
+            </li>
+            <li class="nav-item d-sm-none">
+              <a class="nav-link" href="#" data-action="search-show" data-target="#navbar-search-main">
+                <i class="ni ni-zoom-split-in"></i>
+              </a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="ni ni-email-83"></i>
+              </a>
+              <div class="dropdown-menu dropdown-menu-xl  dropdown-menu-right  py-0 overflow-hidden">
+                <!-- Dropdown header -->
+                <div class="px-3 py-3">
+                  <h6 class="text-sm text-muted m-0">You have <strong class="text-primary">10</strong> new messages.</h6>
+                </div>
+                <!-- List group -->
+                <div class="list-group list-group-flush">
+                  <a href="#!" class="list-group-item list-group-item-action">
+                    <div class="row align-items-center">
+                      <div class="col-auto">
+                        <!-- Avatar -->
+                        <img alt="Image placeholder" src="assets/img/theme/team-1.jpg" class="avatar rounded-circle">
+                      </div>
+                      <div class="col ml--2">
+                        <div class="d-flex justify-content-between align-items-center">
+                          <div>
+                            <h4 class="mb-0 text-sm">maribelemaguin@gmail.com</h4>
+                          </div>
+                          <div class="text-right text-muted">
+                            <small>2 hrs ago</small>
+                          </div>
+                        </div>
+                        <p class="text-sm mb-0">I would like to request barangay clearance for job purposes</p>
+                      </div>
+                    </div>
+                  </a>
+                  <a href="#!" class="list-group-item list-group-item-action">
+                    <div class="row align-items-center">
+                      <div class="col-auto">
+                        <!-- Avatar -->
+                        <img alt="Image placeholder" src="assets/img/theme/team-2.jpg" class="avatar rounded-circle">
+                      </div>
+                      <div class="col ml--2">
+                        <div class="d-flex justify-content-between align-items-center">
+                          <div>
+                            <h4 class="mb-0 text-sm">edwinbatodomingo@gmail.com</h4>
+                          </div>
+                          <div class="text-right text-muted">
+                            <small>3 hrs ago</small>
+                          </div>
+                        </div>
+                        <p class="text-sm mb-0">I would like to follow up regards my request.</p>
+                      </div>
+                    </div>
+                  </a>
+                  <a href="#!" class="list-group-item list-group-item-action">
+                    <div class="row align-items-center">
+                      <div class="col-auto">
+                        <!-- Avatar -->
+                        <img alt="Image placeholder" src="assets/img/theme/team-3.jpg" class="avatar rounded-circle">
+                      </div>
+                      <div class="col ml--2">
+                        <div class="d-flex justify-content-between align-items-center">
+                          <div>
+                            <h4 class="mb-0 text-sm">ktrinaurbano@gmail.com</h4>
+                          </div>
+                          <div class="text-right text-muted">
+                            <small>5 hrs ago</small>
+                          </div>
+                        </div>
+                        <p class="text-sm mb-0">I would like to inquire for a business certification at the barangay</p>
+                      </div>
+                    </div>
+                  </a>
+                  <a href="#!" class="list-group-item list-group-item-action">
+                    <div class="row align-items-center">
+                      <div class="col-auto">
+                        <!-- Avatar -->
+                        <img alt="Image placeholder" src="assets/img/theme/team-4.jpg" class="avatar rounded-circle">
+                      </div>
+                      <div class="col ml--2">
+                        <div class="d-flex justify-content-between align-items-center">
+                          <div>
+                            <h4 class="mb-0 text-sm">DSWD</h4>
+                          </div>
+                          <div class="text-right text-muted">
+                            <small>2 hrs ago</small>
+                          </div>
+                        </div>
+                        <p class="text-sm mb-0">Can I request for the list of your residents?</p>
+                      </div>
+                    </div>
+                  </a>
+                  <a href="#!" class="list-group-item list-group-item-action">
+                    <div class="row align-items-center">
+                      <div class="col-auto">
+                        <!-- Avatar -->
+                        <img alt="Image placeholder" src="assets/img/theme/team-5.jpg" class="avatar rounded-circle">
+                      </div>
+                      <div class="col ml--2">
+                        <div class="d-flex justify-content-between align-items-center">
+                          <div>
+                            <h4 class="mb-0 text-sm">Admin 2</h4>
+                          </div>
+                          <div class="text-right text-muted">
+                            <small>3 hrs ago</small>
+                          </div>
+                        </div>
+                        <p class="text-sm mb-0">Lets update the database</p>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+                <!-- View all -->
+                <a href="#!" class="dropdown-item text-center text-primary font-weight-bold py-3">View all</a>
+              </div>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="ni ni-ungroup"></i>
+              </a>
+              <div class="dropdown-menu dropdown-menu-lg dropdown-menu-dark bg-white  dropdown-menu-right ">
+                <div class="row shortcuts py-3 px-3">
+                  <a href="#!" class="col-6 shortcut-item">
+                    <span class="shortcut-media avatar rounded-circle bg-gradient-red">
+                      <i class="ni ni-calendar-grid-58"></i>
+                    </span>
+                    <small class="text-dark">Calendar</small>
+                  </a>
+                  <a href="#!" class="col-6 shortcut-item pb-3">
+                    <span class="shortcut-media avatar rounded-circle bg-gradient-orange">
+                      <i class="ni ni-email-83"></i>
+                    </span>
+					<small class="text-dark">Email</small>
+                    
+                  </a>
+                  <a href="#!" class="col-6 shortcut-item">
+                    <span class="shortcut-media avatar rounded-circle bg-gradient-info">
+                      <i class="ni ni-credit-card"></i>
+                    </span>
+                    <small class="text-dark">Payments</small>
+                  </a>
+                  <a href="#!" class="col-6 shortcut-item">
+                    <span class="shortcut-media avatar rounded-circle bg-gradient-green">
+                      <i class="ni ni-books"></i>
+                    </span>
+                    <small class="text-dark">Reports</small>
+                  </a>
+                </div>
+              </div>
+            </li>
+          </ul>
+          <ul class="navbar-nav align-items-center  ml-auto ml-md-0 ">
+            <li class="nav-item dropdown">
+              <a class="nav-link pr-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <div class="media align-items-center">
+                  <span class="avatar avatar-sm rounded-circle bg-gradient-primary">
+                    <i class="fas fa-user"> </i>
+                  </span>
+                  <div class="media-body  ml-2  d-none d-lg-block">
+                    <span class="mb-0 text-sm  font-weight-bold">Admin</span>
+                  </div>
+                </div>
+              </a>
+              <div class="dropdown-menu  dropdown-menu-right ">
+                <div class="dropdown-header noti-title">
+                  <h6 class="text-overflow m-0">Hi Admin</h6>
+                </div>
+                <a href="#!" class="dropdown-item">
+                  <i class="ni ni-settings-gear-65"></i>
+                  <span>Settings</span>
+                </a>
+                <div class="dropdown-divider"></div>
+                <a href="login.html" class="dropdown-item">
+                  <i class="ni ni-user-run"></i>
+                  <span>Logout</span>
+                </a>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <!-- Header -->
+    <!-- Header -->
+    <div class="header bg-primary pb-3">
+      <div class="container-fluid">
+        <div class="header-body">
+          <div class="row align-items-center py-4">
+            <div class="col-lg-6 col-7">
+              <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
+                <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
+                  <li class="breadcrumb-item"><a href="#"><i class="fas fa-user"></i></a></li>
+                  <li class="breadcrumb-item"><a href="#">Residents List</a></li>
+                </ol>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Page content -->
+	<div class="col">
+		<div class="card">
+		<!-- Light table -->
+			<div class="container">
+			<div class="table-wrapper">
+            <div class="table-title">
+                <div class="row">
+					<div class="col-sm-8"><h1>Resident <b>Details</b></h1></div>
+                    <div class="col-sm-4">
+                        <button type="button" class="btn btn-info add-new"><i class="fa fa-plus"></i> Add New</button>
+                    </div>
+                </div>
+            </div>
+            <table class="table table-sm table-hover no-border table-responsive">
+                <thead>
+                    <tr>
+                        <th scope="col">Resident ID</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Contact No.</th>
+                        <th scope="col">Sex</th>
+                        <th scope="col">Birthdate</th>
+                        <th scope="col">Occupation</th>
+                        <th scope="col">Purok</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td scope="row">00001</td>
+                        <td>Allan Dela Cruz</td>
+                        <td>09959903372</td>
+                        <td>M</td>
+                        <td>01/11/1985</td>
+                        <td>Government Employee</td>
+                        <td>2</td>
+                        <td>
+							              <a class="add"><i class="material-icons">&#xE03B;</i></a>
+                            <a class="edit"><i class="material-icons">&#xE254;</i></a>
+                            <a class="delete"><i class="material-icons">&#xE872;</i></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td scope="row">00002</td>
+                        <td>Alex Lacayanga</td>
+                        <td>09959505342</td>
+                        <td>M</td>
+                        <td>06/27/1981</td>
+                        <td>Bank Teller</td>
+                        <td>5</td>
+                        <td>
+							              <a class="add"><i class="material-icons">&#xE03B;</i></a>
+                            <a class="edit"><i class="material-icons">&#xE254;</i></a>
+                            <a class="delete"><i class="material-icons">&#xE872;</i></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td scope="row">00003</td>
+                        <td>Alma Moreno</td>
+                        <td>09958943672</td>
+                        <td>F</td>
+                        <td>06/24/1995</td>
+                        <td>Lawyer</td>
+                        <td>2</td>
+                        <td>
+						              	<a class="add"><i class="material-icons">&#xE03B;</i></a>
+                            <a class="edit"><i class="material-icons">&#xE254;</i></a>
+                            <a class="delete"><i class="material-icons">&#xE872;</i></a>
+                        </td>
+                    </tr>
+					          <tr>
+                        <td scope="row">00004</td>
+                        <td>Alfredo Lim</td>
+                        <td>09959563472</td>
+                        <td>M</td>
+                        <td>07/13/2005</td>
+                        <td>N/A</td>
+                        <td>6</td>
+                        <td>
+							              <a class="add"><i class="material-icons">&#xE03B;</i></a>
+                            <a class="edit"><i class="material-icons">&#xE254;</i></a>
+                            <a class="delete"><i class="material-icons">&#xE872;</i></a>
+                        </td>
+                    </tr>
+					          <tr>
+                        <td scope="row">00005</td>
+                        <td>Baron Urbano</td>
+                        <td>09659573472</td>
+                        <td>M</td>
+                        <td>03/31/1999</td>
+                        <td>Municipal Engineer</td>
+                        <td>3</td>
+                        <td>
+							              <a class="add"><i class="material-icons">&#xE03B;</i></a>
+                            <a class="edit"><i class="material-icons">&#xE254;</i></a>
+                            <a class="delete"><i class="material-icons">&#xE872;</i></a>
+                        </td>
+                    </tr>
+						        <tr>
+                        <td scope="row">00006</td>
+                        <td>Bart Porras</td>
+                        <td>09959963472</td>
+                        <td>M</td>
+                        <td>04/15/1985</td>
+                        <td>Store Owner</td>
+                        <td>3</td>
+                        <td>
+							              <a class="add"><i class="material-icons">&#xE03B;</i></a>
+                            <a class="edit"><i class="material-icons">&#xE254;</i></a>
+                            <a class="delete"><i class="material-icons">&#xE872;</i></a>
+                        </td>
+                    </tr>
+						        <tr>
+                        <td scope="row">00007</td>
+                        <td>Carmela Lim</td>
+                        <td>09959563472</td>
+                        <td>F</td>
+                        <td>07/13/2005</td>
+                        <td>Data Analyst</td>
+                        <td>5</td>
+                        <td>
+							              <a class="add"><i class="material-icons">&#xE03B;</i></a>
+                            <a class="edit"><i class="material-icons">&#xE254;</i></a>
+                            <a class="delete"><i class="material-icons">&#xE872;</i></a>
+                        </td>
+                    </tr>
+						        <tr>
+                        <td scope="row">00008</td>
+                        <td>Cindy Lim</td>
+                        <td>09956572567</td>
+                        <td>F</td>
+                        <td>09/13/2003</td>
+                        <td>N/A</td>
+                        <td>5</td>
+                        <td>
+							              <a class="add"><i class="material-icons">&#xE03B;</i></a>
+                            <a class="edit"><i class="material-icons">&#xE254;</i></a>
+                            <a class="delete"><i class="material-icons">&#xE872;</i></a>
+                        </td>
+                    </tr> 
+					          <tr>
+                        <td scope="row">00009</td>
+                        <td>Carla Abella</td>
+                        <td>09959563472</td>
+                        <td>F</td>
+                        <td>08/26/2001</td>
+                        <td>Junior Accountant</td>
+                        <td>6</td>
+                        <td>
+							              <a class="add"><i class="material-icons">&#xE03B;</i></a>
+                            <a class="edit"><i class="material-icons">&#xE254;</i></a>
+                            <a class="delete"><i class="material-icons">&#xE872;</i></a>
+                        </td>
+                    </tr> 
+					          <tr>
+                        <td scope="row">00010</td>
+                        <td>Dorris Bagalay</td>
+                        <td>09969567342</td>
+                        <td>F</td>
+                        <td>04/30/2005</td>
+                        <td>N/A</td>
+                        <td>6</td>
+                        <td>
+						              	<a class="add"><i class="material-icons">&#xE03B;</i></a>
+                            <a class="edit"><i class="material-icons">&#xE254;</i></a>
+                            <a class="delete"><i class="material-icons">&#xE872;</i></a>
+                        </td>
+                    </tr> 	
+                </tbody>
+            </table>
+			 <!-- Card footer -->
+            <div class="card-footer py-4">
+              <nav aria-label="...">
+                <ul class="pagination justify-content-end mb-0">
+                  <li class="page-item disabled">
+                    <a class="page-link" href="#" tabindex="-1">
+                      <i class="fas fa-angle-left"></i>
+                      <span class="sr-only">Previous</span>
+                    </a>
+                  </li>
+                  <li class="page-item active">
+                    <a class="page-link" href="#">1</a>
+                  </li>
+                  <li class="page-item">
+                    <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
+                  </li>
+                  <li class="page-item"><a class="page-link" href="#">3</a></li>
+                  <li class="page-item">
+                    <a class="page-link" href="#">
+                      <i class="fas fa-angle-right"></i>
+                      <span class="sr-only">Next</span>
+                    </a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+        </div>
+    </div>     
+        
+           
+          </div>
+        </div>
+		<!-- Modal -->
+<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">About Us</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+	  <img src="abt.png" class="img-responsive" width="100%">
+	  
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+  </div>
+  <!-- Argon Scripts -->
+  <!-- Core -->
+  <!-- Core 2 -->
+   <!-- Argon Scripts -->
+  <!-- Core -->
+	<script src="assets/vendor/jquery/dist/jquery.min.js"></script>
+  <script src="assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/js-cookie/js.cookie.js"></script>
+  <script src="assets/vendor/jquery.scrollbar/jquery.scrollbar.min.js"></script>
+  <script src="assets/vendor/jquery-scroll-lock/dist/jquery-scrollLock.min.js"></script>
+  <!-- Optional JS -->
+  <script src="assets/vendor/chart.js/dist/Chart.min.js"></script>
+  <script src="assets/vendor/chart.js/dist/Chart.extension.js"></script>
+  <!-- Argon JS -->
+  <script src="assets/js/argon.js?v=1.2.0"></script>
+</body>
+
+</html>
